@@ -1,0 +1,28 @@
+pomodoro-indicator (0.2.0-0extras15.10.3) wily; urgency=medium
+
+  * Updated README
+  * Fixed dependencies
+
+ -- Lorenzo Carbonell <lorenzo.carbonell.cerezo@gmail.com>  Wed, 01 Jun 2016 22:17:24 +0200
+
+pomodoro-indicator (0.2.0-0extras15.10.0) wily; urgency=medium
+
+  * Added more icons (60 images)
+  * Session goes forward
+  * Break goes backward
+  * Added option to set number of pomodoros
+  * Added long break after end max number of pomodoros
+
+ -- Lorenzo Carbonell <lorenzo.carbonell.cerezo@gmail.com>  Mon, 28 Mar 2016 23:37:32 +0200
+
+pomodoro-indicator (0.1.0-0extras15.10.0) wily; urgency=medium
+
+  * Upgraded to wily
+
+ -- Lorenzo Carbonell <lorenzo.carbonell.cerezo@gmail.com>  Sun, 24 Jan 2016 10:14:30 +0100
+
+pomodoro-indicator (0.1.0-0extras14.04.1) trusty; urgency=low
+
+  * First release
+
+ -- Lorenzo Carbonell <atareao@trusty>  Fri, 02 May 2014 10:40:01 +0200
