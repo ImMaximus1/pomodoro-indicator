@@ -247,6 +247,11 @@ issues'))
         self.pomodoro_start.show()
         menu.append(self.pomodoro_start)
 
+        self.pomodoro_reset = Gtk.MenuItem.new_with_label(_('Reset Pomodoro Set'))
+        self.pomodoro_reset.connect('activate', self.on_pomodoro_reset)
+        self.pomodoro_reset.show()
+        menu.append(self.pomodoro_reset)
+
         separator1 = Gtk.SeparatorMenuItem()
         separator1.show()
         menu.append(separator1)
@@ -312,6 +317,22 @@ issues'))
                 icon
             )
             self.notification.show()
+
+    def on_pomodoro_reset(self, widget):
+        self.stop_working_process()
+        self.active = False
+        self.pomodoros = 0
+        # Set or session trigger - what has been stopped
+        self.isSet = False
+        # Break or session trigger - what has been stopped
+        self.isBreak = False
+        icon = os.path.join(comun.ICONDIR, 'pomodoro-start-%s.svg' % (self.theme))
+        self.frame = 0
+        self.pomodoro_start.set_label(_('Start'))
+        self.indicator.set_icon(icon)
+        print('Pomodoro Set reseted')
+        self.notification.update('Pomodoro-Indicator', _('Pomodoro Set reseted'), icon)
+        self.notification.show()
 
     def stop_working_process(self):
         if self.pw > 0:
