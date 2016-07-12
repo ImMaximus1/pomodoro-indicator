@@ -95,6 +95,10 @@ class Pomodoro_Indicator(GObject.GObject):
         self.animate = False
         self.frame = 0
         self.pomodoros = 0
+        # Set or session trigger - what has been stopped
+        self.isSet = False
+        # Break or session trigger - what has been stopped
+        self.isBreak = False
         self.notification = Notify.Notification.new('', '', None)
         self.read_preferences()
         #
@@ -112,7 +116,7 @@ class Pomodoro_Indicator(GObject.GObject):
         self.connect('session_end', self.on_session_end)
         self.connect('break_end', self.on_break_end)
 
-    def on_scroll(self, widget, steps, direcction):
+    def on_scroll(self, widget, steps, direction):
         self.on_pomodoro_start(None)
 
     def play(self, afile):
@@ -143,7 +147,7 @@ class Pomodoro_Indicator(GObject.GObject):
         self.version = configuration.get('version')
         self.theme = configuration.get('theme')
         self.break_theme = configuration.get('break_theme')
-        self.max_pomodoros = configuration.get('number_of_pomodoros')
+        self.max_pomodoros = int(configuration.get('number_of_pomodoros'))
         self.session_length = configuration.get('session_length')
         self.break_length = configuration.get('break_length')
         self.long_break_length = configuration.get('long_break_length')
@@ -273,27 +277,40 @@ issues'))
         if not self.active:
             self.active = True
             self.pomodoro_start.set_label(_('Stop'))
+            print('Session {0} of Pomodoro set starts'.format(self.pomodoros + 1))
             self.notification.update('Pomodoro-Indicator',
-                                     _('The Pomodoro set starts'),
+                                     _('Session {0} of Pomodoro set starts'.format(self.pomodoros + 1)),
                                      os.path.join(comun.ICONDIR,
-                                                  'pomodoro-start-%s.svg' % (
-                                                    self.theme)))
+                                                  'pomodoro-start-%s.svg' % (self.theme)))
             self.notification.show()
             self.countdown_session()
+            # Stop trigger - what will has been stopped: break or session
+            self.isBreak = False
+
             interval = int(self.session_length * 60 / TOTAL_FRAMES)
             self.start_working_process(interval, self.countdown_session)
         else:
             self.stop_working_process()
             self.active = False
-            self.pomodoros = 0
+            # If first session has just been stopped we will set pomodoro counter (self.pomodoros) to nil
+            if self.pomodoros == 0 or self.pomodoros == self.max_pomodoros:
+                self.pomodoros = 0
+                self.isSet = True
+                icon = os.path.join(comun.ICONDIR, 'pomodoro-indicator-%s-%s.svg' % (self.theme, 'set'))
+            else:
+                self.isSet = False
+                icon = os.path.join(comun.ICONDIR, 'pomodoro-stop-%s.svg' % (self.theme))
             self.frame = 0
             self.pomodoro_start.set_label(_('Start'))
-            icon = os.path.join(comun.ICONDIR,
-                                'pomodoro-stop-%s.svg' % (self.theme))
             self.indicator.set_icon(icon)
-            self.notification.update('Pomodoro-Indicator',
-                                     _('Pomodoro set stop'),
-                                     icon)
+            print('Pomodoro {0} stop'.format("set" if self.isSet else "session {0[0]} on {0[1]}".format(
+                    (self.pomodoros, "break") if self.isBreak else (self.pomodoros + 1, "session"))))
+            self.notification.update(
+                'Pomodoro-Indicator',
+                _('Pomodoro {0} stop'.format("set" if self.isSet else "session {0[0]} on {0[1]}".format(
+                    (self.pomodoros, "break") if self.isBreak else (self.pomodoros + 1, "session")))),
+                icon
+            )
             self.notification.show()
 
     def stop_working_process(self):
@@ -309,7 +326,7 @@ issues'))
         self.pw = GLib.timeout_add_seconds(interval, countdown)
 
     def on_break_end(self, widget):
-        if self.pomodoros < self.max_pomodoros - 1:
+        if self.pomodoros < self.max_pomodoros:
             self.frame = 0
             icon = os.path.join(comun.ICONDIR,
                                 'pomodoro-indicator-%s-%02d.svg' % (self.theme,
@@ -321,11 +338,13 @@ issues'))
             print('**************************')
             print(icon)
             self.indicator.set_icon(icon)
-            self.pomodoros += 1
 
             self.notification.update('Pomodoro-Indicator',
-                                     _('Session starts'), icon)
+                                     _('Session {0} starts'.format(self.pomodoros + 1)), icon)
             self.notification.show()
+            # Stop trigger - what will has been stopped: break or session
+            self.isBreak = False
+
             interval = int(self.session_length * 60 / TOTAL_FRAMES)
             self.start_working_process(interval, self.countdown_session)
         else:
@@ -346,15 +365,17 @@ issues'))
 
     def on_session_end(self, widget):
         self.active = True
+        # One more pomodoro session has finished
+        self.pomodoros += 1
         self.frame = TOTAL_FRAMES
-        if self.pomodoros == self.max_pomodoros - 1 and self.max_pomodoros != 1:
+        if self.pomodoros == self.max_pomodoros and self.max_pomodoros != 1:
             interval = int(self.long_break_length * 60 / TOTAL_FRAMES)
-            message = _('Session ends - long break starts')
+            message = _('Session {0} ends - long break starts'.format(self.pomodoros))
             # Add different sound file for a long break start
             sound_file = self.long_break_sound_file
         else:
             interval = int(self.break_length * 60 / TOTAL_FRAMES)
-            message = _('Session ends - break starts')
+            message = _('Session {0} ends - break starts'.format(self.pomodoros))
             # Add different sound file for a long break start
             sound_file = self.session_sound_file
         # Set type of break's icons like an inversion of selected team
@@ -367,6 +388,9 @@ issues'))
         if self.play_sounds:
             self.play(sound_file)
         self.indicator.set_icon(icon)
+        # Stop trigger - what will been stopped: break or session
+        self.isBreak = True
+
         self.countdown_break()
         self.start_working_process(interval, self.countdown_break)
 

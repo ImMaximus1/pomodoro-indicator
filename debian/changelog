@@ -1,3 +1,11 @@
+pomodoro-indicator (0.2.0-0extras15.10.6) wily; urgency=medium
+
+  * Stop on breaks don't break set and switch to the next session
+  * Stop on session don't break set and switch to the stopped session
+  * Add notifications on break and sessions stop
+
+ -- Max Medvedovsky <mmedvedovsky@gmail.com>  Tue, 12 Jun 2016 18:06:11 +0200
+
 pomodoro-indicator (0.2.0-0extras15.10.3) wily; urgency=medium
 
   * Updated README

@@ -3,7 +3,7 @@
 #
 # preferences_dialog.py
 #
-# This file is part of PushBullet-Indicator
+# This file is part of Pomodoro-Indicator
 #
 # Copyright (C) 2014
 # Lorenzo Carbonell Cerezo <lorenzo.carbonell.cerezo@gmail.com>
