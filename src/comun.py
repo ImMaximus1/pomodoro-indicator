@@ -49,8 +49,10 @@ CONFIG_APP_DIR = os.path.join(CONFIG_DIR, APP)
 CONFIG_FILE = os.path.join(CONFIG_APP_DIR, APPCONF)
 DATA_FILE = os.path.join(CONFIG_APP_DIR, APPDATA)
 AUTOSTART_DIR = os.path.join(CONFIG_DIR, 'autostart')
+# FILE_AUTO_START = os.path.join(AUTOSTART_DIR,
+#                                'pomodoro-indicator-autostart.desktop')
 FILE_AUTO_START = os.path.join(AUTOSTART_DIR,
-                               'pomodoro-indicator-autostart.desktop')
+                               'extras-pomodoro-indicator.desktop')
 if not os.path.exists(CONFIG_APP_DIR):
     os.makedirs(CONFIG_APP_DIR)
 
@@ -61,22 +63,26 @@ if is_package():
     LANGDIR = os.path.join(ROOTDIR, 'locale-langpack')
     APPDIR = os.path.join(ROOTDIR, APP)
     ICONDIR = os.path.join(APPDIR, 'icons')
-    SOCIALDIR = os.path.join(APPDIR, 'social')
+    # SOCIALDIR = os.path.join(APPDIR, 'social')
     SOUNDIR = os.path.join(APPDIR, 'sounds')
     CHANGELOG = os.path.join(APPDIR, 'changelog')
+    # FILE_AUTO_START_ORIG = os.path.join(APPDIR,
+    #                                     'pomodoro-indicator-autostart.desktop')
     FILE_AUTO_START_ORIG = os.path.join(APPDIR,
-                                        'pomodoro-indicator-autostart.desktop')
+                                        'extras-pomodoro-indicator.desktop')
 else:
     ROOTDIR = os.path.dirname(__file__)
     LANGDIR = os.path.join(ROOTDIR, 'template1')
     APPDIR = os.path.join(ROOTDIR, APP)
     ICONDIR = os.path.normpath(os.path.join(ROOTDIR, '../data/icons'))
-    SOCIALDIR = os.path.normpath(os.path.join(ROOTDIR, '../data/social'))
+    # SOCIALDIR = os.path.normpath(os.path.join(ROOTDIR, '../data/social'))
     SOUNDIR = os.path.normpath(os.path.join(ROOTDIR, '../data/sounds'))
     DEBIANDIR = os.path.normpath(os.path.join(ROOTDIR, '../debian'))
     CHANGELOG = os.path.join(DEBIANDIR, 'changelog')
+    # FILE_AUTO_START_ORIG = os.path.join(os.path.normpath(os.path.join(
+    #     ROOTDIR, '../data')), 'pomodoro-indicator-autostart.desktop')
     FILE_AUTO_START_ORIG = os.path.join(os.path.normpath(os.path.join(
-        ROOTDIR, '../data')), 'pomodoro-indicator-autostart.desktop')
+        ROOTDIR, '../data')), 'extras-pomodoro-indicator.desktop')
 ICON = os.path.join(ICONDIR, 'pomodoro-indicator.svg')
 DEFAULT_SESSION_SOUND_FILE = os.path.join(SOUNDIR, 'ringbell.ogg')
 DEFAULT_BREAK_SOUND_FILE = os.path.join(SOUNDIR, 'gong.ogg')

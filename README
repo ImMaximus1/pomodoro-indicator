@@ -4,10 +4,8 @@ Pomodoro-Indicator
 
 Pomodoro-Indicator an indicator to work with the Pomodoro Technique
 
-For more information, please visit our website:
-http://www.atareao.es/apps/la-tecnica-pomodoro-en-ubuntu-con-pomodoro-indicator/
-or
-http://www.atareao.es
+For more information:
+https://en.wikipedia.org/wiki/Pomodoro_Technique
 
 ============
 Requirements
@@ -37,6 +35,4 @@ Download the code:
 Install
 =======
 
-    $ sudo add-apt-repository ppa:atareao/atareao
-    $ sudo apt-get update
-    $ sudo apt-get install pomodoro-indicator
+    $ sudo python setup.py install

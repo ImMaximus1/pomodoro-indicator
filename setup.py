@@ -19,6 +19,9 @@ import polib
 import configparser
 import codecs
 
+CONFIG_DIR = os.path.join(os.path.expanduser('~'), '.config')
+AUTOSTART_DIR = os.path.join(CONFIG_DIR, 'autostart')
+
 DATA_FILES = [
     ('/opt/extras.ubuntu.com/pomodoro-indicator/bin', glob.glob('bin/*')),
     ('/opt/extras.ubuntu.com/pomodoro-indicator/share/pomodoro-indicator', ['debian/changelog']),
@@ -28,6 +31,7 @@ DATA_FILES = [
     ('/opt/extras.ubuntu.com/pomodoro-indicator/share/pomodoro-indicator/sounds', glob.glob('data/sounds/*.ogg')),
     ('/opt/extras.ubuntu.com/pomodoro-indicator/share/pomodoro-indicator/icons', glob.glob('data/icons/*.svg')),
     ('/usr/share/applications', ['data/extras-pomodoro-indicator.desktop']),
+    (AUTOSTART_DIR, ['data/extras-pomodoro-indicator.desktop']),
 ]
 
 MAIN_DIR = os.getcwd()
@@ -89,7 +93,8 @@ def list_src():
 def list_languages():
     lans = []
     file_txt = os.path.join(LANGUAGES_DIR, 'languages.txt')
-    if os.path.exists(file_txt) == True:
+    # if os.path.exists(file_txt) == True:
+    if os.path.exists(file_txt):
         f = open(file_txt, 'r')
         for linea in f.readlines():
             lan = linea[:-1]
@@ -142,9 +147,9 @@ def update_desktop_file_fp():
         ln = os.path.splitext(os.path.split(filein)[1])[0]
         lns.append(ln)
     for filedesktopin in glob.glob('*.desktop.in'):
-        desktopfile = ConfigParser.ConfigParser()
+        desktopfile = configparser.ConfigParser()
         desktopfile.optionxform = str
-        desktopfile.readfp(codecs.open(filedesktopin, encoding='utf-8', mode='r'))
+        desktopfile.read_file(codecs.open(filedesktopin, encoding='utf-8', mode='r'))
         if len(lns) > 0:
             for entry in desktopfile.items('Desktop Entry'):
                 if entry[0].startswith('_'):
@@ -169,9 +174,9 @@ def update_desktop_file():
         fileout = codecs.open('./data/%s' % desktopfilename, encoding='utf-8', mode='w')
         fileout.write('[Desktop Entry]\n')
         #
-        desktopfile = ConfigParser.ConfigParser()
+        desktopfile = configparser.ConfigParser()
         desktopfile.optionxform = str
-        desktopfile.readfp(codecs.open('./%s.in' % desktopfilename, encoding='utf-8', mode='r'))
+        desktopfile.read_file(codecs.open('./%s.in' % desktopfilename, encoding='utf-8', mode='r'))
         if len(lns) > 0:
             for entry in desktopfile.items('Desktop Entry'):
                 if not entry[0].startswith('$'):
@@ -206,27 +211,38 @@ def delete_it(file):
             os.remove(file)
 
 
-def remove_files(dir, ext):
+def remove_files(directory, ext):
     files = []
-    for file in glob.glob(os.path.join(dir, '*')):
-        if file != None and os.path.exists(file):
-            if file and os.path.isdir(file):
-                morefiles = remove_files(file, ext)
-                if morefiles:
-                    files.extend(morefiles)
-            else:
-                files.append(file)
-    for file in files:
-        if os.path.splitext(file)[1] == ext:
-            os.remove(file)
+
+    def find_files(directory, ext):
+        for some_file in glob.glob(os.path.join(directory, '*')):
+            if os.path.exists(some_file):
+                if some_file and os.path.isdir(some_file):
+                    find_files(some_file, ext)
+                    files.append(some_file)
+                else:
+                    files.append(some_file)
+        return files
+
+    for some_file in find_files(directory, ext):
+        for some_ext in ext:
+            if os.path.splitext(some_file)[1] == some_ext:
+                print("Remove {0}".format(some_file))
+                os.remove(some_file)
+        if some_file and os.path.isdir(some_file):
+            try:
+                print("Remove {0}".format(some_file))
+                os.rmdir(some_file)
+            except OSError:
+                print("Can't remove {0}. Not empty.".format(some_file))
 
 
-def remove_compiled_files(dir):
-    remove_files(dir, '.pyc')
+def remove_compiled_files(directory):
+    remove_files(directory, '.pyc')
 
 
-def remove_languages_saved_files(dir):
-    remove_files(dir, '.po~')
+def remove_languages_saved_files(directory):
+    remove_files(directory, '.po~')
 
 
 def babilon():
