@@ -330,8 +330,8 @@ issues'))
         self.frame = 0
         self.pomodoro_start.set_label(_('Start'))
         self.indicator.set_icon(icon)
-        print('Pomodoro Set reseted')
-        self.notification.update('Pomodoro-Indicator', _('Pomodoro Set reseted'), icon)
+        print('Pomodoro Set reset')
+        self.notification.update('Pomodoro-Indicator', _('Pomodoro Set reset'), icon)
         self.notification.show()
 
     def stop_working_process(self):
