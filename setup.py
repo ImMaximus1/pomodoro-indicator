@@ -26,12 +26,14 @@ DATA_FILES = [
     ('/opt/extras.ubuntu.com/pomodoro-indicator/bin', glob.glob('bin/*')),
     ('/opt/extras.ubuntu.com/pomodoro-indicator/share/pomodoro-indicator', ['debian/changelog']),
     ('/opt/extras.ubuntu.com/pomodoro-indicator/share/pomodoro-indicator', glob.glob('src/*.py')),
-    ('/opt/extras.ubuntu.com/pomodoro-indicator/share/pomodoro-indicator',
-     ['data/pomodoro-indicator-autostart.desktop']),
+    # ('/opt/extras.ubuntu.com/pomodoro-indicator/share/pomodoro-indicator',
+    #  ['data/pomodoro-indicator-autostart.desktop']),
     ('/opt/extras.ubuntu.com/pomodoro-indicator/share/pomodoro-indicator/sounds', glob.glob('data/sounds/*.ogg')),
     ('/opt/extras.ubuntu.com/pomodoro-indicator/share/pomodoro-indicator/icons', glob.glob('data/icons/*.svg')),
     ('/usr/share/applications', ['data/extras-pomodoro-indicator.desktop']),
     (AUTOSTART_DIR, ['data/extras-pomodoro-indicator.desktop']),
+    ('/opt/extras.ubuntu.com/pomodoro-indicator/share/pomodoro-indicator',
+     ['data/extras-pomodoro-indicator.desktop']),
 ]
 
 MAIN_DIR = os.getcwd()
