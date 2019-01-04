@@ -13,4 +13,7 @@ X-Ubuntu-Gettext-Domain = pomodoro-indicator
 $Name[es] = _('Pomodoro-Indicator')
 $GenericName[es] = _('Pomodoro-Indicator')
 $Comment[es] = _('An indicator for working with Pomodoro Technique')
+$Name[ru] = _('Pomodoro-Indicator')
+$GenericName[ru] = _('Pomodoro-Indicator')
+$Comment[ru] = _('An indicator for working with Pomodoro Technique')
 

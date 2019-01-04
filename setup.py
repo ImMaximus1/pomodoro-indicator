@@ -73,7 +73,7 @@ def get_entry(filein, msgid):
 
 ########################################################################
 def ejecuta(comando):
-    print ('Ejecutando... %s' % comando)
+    print('Ejecutando... %s' % comando)
     args = shlex.split(comando)
     p = subprocess.Popen(args, bufsize=10000, stdout=subprocess.PIPE)
     valor = p.communicate()[0]

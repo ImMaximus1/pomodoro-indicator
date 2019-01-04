@@ -308,12 +308,14 @@ issues'))
             self.indicator.set_icon(icon)
             print('Pomodoro {0} stop'.format("set" if self.isSet else "session {0[0]} on {0[1]}".format(
                     (self.pomodoros, "break") if self.isBreak else (self.pomodoros + 1, "session"))))
-            self.notification.update(
-                'Pomodoro-Indicator',
-                _('Pomodoro {0} stop'.format("set" if self.isSet else "session {0[0]} on {0[1]}".format(
-                    (self.pomodoros, "break") if self.isBreak else (self.pomodoros + 1, "session")))),
-                icon
-            )
+            if self.isSet:
+                notification_message = _('Pomodoro set stop')
+            else:
+                if self.isBreak:
+                    notification_message = _('Pomodoro session {0} on break stop').format(self.pomodoros)
+                else:
+                    notification_message = _('Pomodoro session {0} on session stop').format(self.pomodoros + 1)
+            self.notification.update('Pomodoro-Indicator', notification_message, icon)
             self.notification.show()
 
     def on_pomodoro_reset(self, widget):
