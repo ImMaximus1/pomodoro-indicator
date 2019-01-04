@@ -497,7 +497,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
         about_dialog.set_documenters([
             'Lorenzo Carbonell <https://launchpad.net/~lorenzo-carbonell>',
         ])
-        about_dialog.set_translator_credits('Lorenzo Carbonell <https://launchpad.net/~lorenzo-carbonell>')
+        about_dialog.set_translator_credits(_('translator-credits'))
         about_dialog.set_icon(GdkPixbuf.Pixbuf.new_from_file(comun.ICON))
         about_dialog.set_logo(GdkPixbuf.Pixbuf.new_from_file(comun.ICON))
         about_dialog.set_program_name(comun.APPNAME)
