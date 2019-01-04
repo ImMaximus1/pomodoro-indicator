@@ -101,14 +101,12 @@ class Pomodoro_Indicator(GObject.GObject):
         self.isBreak = False
         self.notification = Notify.Notification.new('', '', None)
         self.read_preferences()
-        #
         self.indicator = appindicator.Indicator.new('Pomodoro-Indicator',
                                                     self.active_icon,
                                                     appindicator.
                                                     IndicatorCategory.
                                                     HARDWARE)
         self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
-
         self.indicator.connect('scroll-event', self.on_scroll)
 
         menu = self.get_menu()
